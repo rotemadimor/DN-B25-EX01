@@ -35,9 +35,10 @@ namespace Ex01_03
 
         public static string GetDigitsToPrintByFloor(char floor, int[] io_digitsArray, int i_nextLeafDigitToPrint, int digitsPrintedInThisFloor)
         {
-            int indexOffset = floor - 'A';
-            int startingPoint = (io_digitsArray.Length - 1)/2 - indexOffset;
-            char[] arrayToPrint = new string(' ', 17).ToCharArray();
+            char[] arrayToPrint = new string(' ', 16).ToCharArray();
+            int indexOffset = 2*(floor - 'A') - 1;
+            int startingPoint = (arrayToPrint.Length) / 2 - indexOffset;
+            
             for (int i = 0; i< digitsPrintedInThisFloor; i++)
             {   
                 if (i_nextLeafDigitToPrint > 8)
