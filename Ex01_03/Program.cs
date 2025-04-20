@@ -16,7 +16,7 @@ namespace Ex01_03
             
             recursionFunc(digitsArray, leafDigitToPrint,FloorOfTree);
 
-
+            Console.WriteLine("press any key to continue...");
             Console.ReadLine();
         }
 
