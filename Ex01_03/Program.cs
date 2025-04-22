@@ -28,12 +28,6 @@ namespace Ex01_03
 
             Console.WriteLine("press any key to continue...");
             Console.ReadLine();
-
-            
-            recursionFunc(digitsArray, leafDigitToPrint,FloorOfTree);
-
-            Console.WriteLine("press any key to continue...");
-            Console.ReadLine();
         }
 
         public static void recursionFunc(int[] i_digitsArray, int i_nextLeafDigitToPrint, char i_FloorOfTree)
