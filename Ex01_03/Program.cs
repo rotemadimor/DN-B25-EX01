@@ -11,40 +11,31 @@ namespace Ex01_03
     {
         public static void Main()
         {
-            char FloorOfTree;
+            int inputValue = 0;
             System.Console.WriteLine("Please enter a number for a tree floors, between 4-15.");
             string inputFromUser = Console.ReadLine();
-            while (!checkInputValidation(inputFromUser, out FloorOfTree))
+            while (!checkInputValidation(inputFromUser, out inputValue))
             {
                 Console.WriteLine("Invalid input. Please enter a number between 4-15.");
                 inputFromUser = Console.ReadLine();
             }
-
-            Ex_02.Program.printTreeByFloor(FloorOfTree);
+            char FloorOfTree = (char)(inputValue + 'A');
+            Ex_02.Program.PrintTreeByFloor(FloorOfTree);
 
             Console.WriteLine("press any key to continue...");
             Console.ReadLine();
         }
 
-        private static bool checkInputValidation(string inputFromUser, out char FloorOfTree)
+        private static bool checkInputValidation(string i_inputFromUser, out int io_inputValue)
         {
-            FloorOfTree = ' ';
-            //int inputValue;
+            io_inputValue = 0;
             bool isInputValueValid = false;
-            bool isInputTypeValid = !string.IsNullOrEmpty(inputFromUser) && inputFromUser.Length == 1;
+            bool isInputTypeValid = !string.IsNullOrEmpty(i_inputFromUser) && int.TryParse(i_inputFromUser, out io_inputValue) ;
             if (isInputTypeValid)
             {
-                int inputValue = getInputValue(inputFromUser, out FloorOfTree);
-                isInputValueValid = inputValue >= 4 && inputValue <= 15;
+                isInputValueValid = io_inputValue >= 4 && io_inputValue <= 15;
             }
             return isInputValueValid;
-        }
-
-        private static int getInputValue(string inputFromUser, out char FloorOfTree)
-        {
-            int floorNumber = int.Parse(inputFromUser);
-            FloorOfTree = (char)(floorNumber + 'A');
-            return floorNumber;
         }
     }
 }

@@ -9,78 +9,74 @@ namespace Ex_02
 {
     public class Program
     {
-        const int maxDigitIndex = 8;
-        const int minDigitIndex = 0;
-        const char space = ' ';
-        const string TreeLog = "|8|";
         public static void Main()
         {
             char maxFloor = 'G';
-            printTreeByFloor(maxFloor);
+            PrintTreeByFloor(maxFloor);
 
             Console.WriteLine("press any key to continue...");
             Console.ReadLine();
         }
-        public static void printTreeByFloor(char maxFloor)
+        public static void PrintTreeByFloor(char i_maxFloor)
         {
-            int leafDigitToPrint = 0;
             char FloorOfTree = 'A';
+            int leafDigitToPrint = 0;
             int[] digitsArray = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
-            recursionFunc(digitsArray, leafDigitToPrint, FloorOfTree, maxFloor);
+            recursionFunc(ref digitsArray, leafDigitToPrint, FloorOfTree, i_maxFloor);
         }
 
-        public static void recursionFunc(int[] i_digitsArray, int i_nextLeafDigitToPrint, char i_FloorOfTree, char maxFloor)
+        private static void recursionFunc(ref int[] i_digitsArray, int i_nextLeafDigitToPrint,
+                                         char i_FloorOfTree, char i_maxFloor)
         {
             int numberOfFloors = i_FloorOfTree - 'A';
             int digitsPrintedInThisFloor = 2 * (i_FloorOfTree - 'A') + 1;
-            string stringToPrint = GetDigitsToPrintByFloor(i_FloorOfTree, i_digitsArray, i_nextLeafDigitToPrint, digitsPrintedInThisFloor, maxFloor);
-            string formattedString1 = String.Format("{0}  {1}", i_FloorOfTree, stringToPrint);
-            Console.WriteLine(formattedString1);
+            string stringToPrint = getDigitsToPrintByFloor(i_FloorOfTree, ref i_digitsArray, i_nextLeafDigitToPrint, digitsPrintedInThisFloor, i_maxFloor);
+            Console.WriteLine($"{i_FloorOfTree}  {stringToPrint}");
             i_FloorOfTree++;
-            if (i_FloorOfTree <= maxFloor)
+            if (i_FloorOfTree < i_maxFloor)
             {
-                int nextDigit = GetNextDigitToPrintAsLeaf(i_nextLeafDigitToPrint, digitsPrintedInThisFloor);
-                recursionFunc(i_digitsArray, nextDigit, i_FloorOfTree, maxFloor);
+                int nextDigit = getNextDigitToPrintAsLeaf(i_nextLeafDigitToPrint, digitsPrintedInThisFloor);
+                recursionFunc(ref i_digitsArray, nextDigit, i_FloorOfTree, i_maxFloor);
             }
         }
-        private static int GetNextDigitToPrintAsLeaf(int i_nextLeafDigitToPrint, int digitsPrintedInThisFloor)
+        private static int getNextDigitToPrintAsLeaf(int i_nextLeafDigitToPrint, int i_digitsPrintedInThisFloor)
         {
-            int nextDigitIndex = i_nextLeafDigitToPrint + digitsPrintedInThisFloor;
-            if (nextDigitIndex > maxDigitIndex)
+            int nextDigitIndex = i_nextLeafDigitToPrint + i_digitsPrintedInThisFloor;
+            if (nextDigitIndex > 8)
             {
-                nextDigitIndex = minDigitIndex;
+                nextDigitIndex = 0;
             }
             return nextDigitIndex;
         }
 
-        private static string GetDigitsToPrintByFloor(char floor, int[] io_digitsArray, int i_nextLeafDigitToPrint, int digitsPrintedInThisFloor, char maxFloor)
+        private static string getDigitsToPrintByFloor(char i_floor,ref int[] i_digitsArray, int i_nextLeafDigitToPrint, int i_digitsPrintedInThisFloor, char i_maxFloor)
         {
-            int maxCharactersInFloor = maxFloor - 'A' + 14; // TODO
-            char firstFloorOfTreeLog = (char)(maxFloor - 2);
+            int maxCharactersInFloor = 4*(i_maxFloor - 'A') + 5;
+            int indexOffset = 2 * (i_floor - 'A') - 1;
+            int startingPoint = maxCharactersInFloor / 2 - indexOffset;
+            char firstFloorOfTreeLog = (char)(i_maxFloor - 2);
+            char[] arrayToPrint = new string(' ', maxCharactersInFloor).ToCharArray();
             string stringToPrint = string.Empty;
-            char[] arrayToPrint = new string(space, maxCharactersInFloor).ToCharArray();
-            int indexOffset = 2 * (floor - 'A') - 1;
-            int startingPoint = (arrayToPrint.Length) / 2 - indexOffset;
-            if (floor < firstFloorOfTreeLog)
-            {
-                for (int i = 0; i < digitsPrintedInThisFloor; i++)
-                {
-                    if (i_nextLeafDigitToPrint > maxDigitIndex)
-                    {
-                        i_nextLeafDigitToPrint = minDigitIndex;
-                    }
-                    arrayToPrint[startingPoint] = (char)(io_digitsArray[i_nextLeafDigitToPrint] + 48);
-                    i_nextLeafDigitToPrint++;
 
+            if (i_floor < firstFloorOfTreeLog)
+            {
+                for (int i = 0; i < i_digitsPrintedInThisFloor; i++)
+                {
+                    if (i_nextLeafDigitToPrint > 8)
+                    {
+                        i_nextLeafDigitToPrint = 0;
+                    }
+                    arrayToPrint[startingPoint] = (char)(i_digitsArray[i_nextLeafDigitToPrint] + 48);
+                    i_nextLeafDigitToPrint++;
                     startingPoint += 2;
                 }
                 stringToPrint = new string(arrayToPrint);
             }
-            else if (floor < maxFloor)
+            else if (i_floor < i_maxFloor)
             {
-                string rightSideSpaces = new string(space, 10);
-                stringToPrint = string.Concat(rightSideSpaces, TreeLog);
+                string rightSideSpaces = new string(' ', maxCharactersInFloor/2);
+                stringToPrint = string.Concat(rightSideSpaces, "|8|");
             }
             return stringToPrint;
         }
