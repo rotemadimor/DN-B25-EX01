@@ -12,41 +12,47 @@ namespace Ex_02
         public static void Main()
         {
             char maxFloor = 'G';
+            
             PrintTreeByFloor(maxFloor);
-
             Console.WriteLine("press any key to continue...");
             Console.ReadLine();
         }
+        
         public static void PrintTreeByFloor(char i_maxFloor)
         {
             char FloorOfTree = 'A';
             int leafDigitToPrint = 0;
             int[] digitsArray = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
-            recursionFunc(ref digitsArray, leafDigitToPrint, FloorOfTree, i_maxFloor);
+            printDigitTreeWithFloors(ref digitsArray, leafDigitToPrint, FloorOfTree, i_maxFloor);
         }
 
-        private static void recursionFunc(ref int[] i_digitsArray, int i_nextLeafDigitToPrint,
+        private static void printDigitTreeWithFloors(ref int[] io_digitsArray, int i_nextLeafDigitToPrint,
                                          char i_FloorOfTree, char i_maxFloor)
         {
+            int nextDigit;
             int numberOfFloors = i_FloorOfTree - 'A';
             int digitsPrintedInThisFloor = 2 * (i_FloorOfTree - 'A') + 1;
-            string stringToPrint = getDigitsToPrintByFloor(i_FloorOfTree, ref i_digitsArray, i_nextLeafDigitToPrint, digitsPrintedInThisFloor, i_maxFloor);
+            string stringToPrint;
+            
+            stringToPrint = getDigitsToPrintByFloor(i_FloorOfTree, ref io_digitsArray, i_nextLeafDigitToPrint, digitsPrintedInThisFloor, i_maxFloor);
             Console.WriteLine($"{i_FloorOfTree}  {stringToPrint}");
             i_FloorOfTree++;
             if (i_FloorOfTree < i_maxFloor)
             {
-                int nextDigit = getNextDigitToPrintAsLeaf(i_nextLeafDigitToPrint, digitsPrintedInThisFloor);
-                recursionFunc(ref i_digitsArray, nextDigit, i_FloorOfTree, i_maxFloor);
+                nextDigit = getNextDigitToPrintAsLeaf(i_nextLeafDigitToPrint, digitsPrintedInThisFloor);
+                printDigitTreeWithFloors(ref io_digitsArray, nextDigit, i_FloorOfTree, i_maxFloor);
             }
         }
         private static int getNextDigitToPrintAsLeaf(int i_nextLeafDigitToPrint, int i_digitsPrintedInThisFloor)
         {
             int nextDigitIndex = i_nextLeafDigitToPrint + i_digitsPrintedInThisFloor;
+            
             if (nextDigitIndex > 8)
             {
                 nextDigitIndex = 0;
             }
+            
             return nextDigitIndex;
         }
 
@@ -67,10 +73,12 @@ namespace Ex_02
                     {
                         i_nextLeafDigitToPrint = 0;
                     }
+                    
                     arrayToPrint[startingPoint] = (char)(i_digitsArray[i_nextLeafDigitToPrint] + 48);
                     i_nextLeafDigitToPrint++;
                     startingPoint += 2;
                 }
+                
                 stringToPrint = new string(arrayToPrint);
             }
             else if (i_floor < i_maxFloor)
@@ -78,6 +86,7 @@ namespace Ex_02
                 string rightSideSpaces = new string(' ', maxCharactersInFloor/2);
                 stringToPrint = string.Concat(rightSideSpaces, "|8|");
             }
+            
             return stringToPrint;
         }
     }
